@@ -19,12 +19,12 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    roles: [
+    roles: 
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Role",
       },
-    ],
+    
   },
   {
     versionKey: false,
