@@ -2,6 +2,7 @@
 // Importa el modelo de datos 'Role'
 const Role = require("../models/role.model.js");
 const User = require("../models/user.model.js");
+const Estados = require("../models/estado.model.js");
 
 /**
  * Crea los roles por defecto en la base de datos.
@@ -25,6 +26,24 @@ async function createRoles() {
     console.error(error);
   }
 }
+async function createEstados() {
+  try {
+    // Busca todos los roles en la base de datos
+    const count = await Estados.estimatedDocumentCount();
+    // Si no hay roles en la base de datos los crea
+    if (count > 0) return;
+
+    await Promise.all([
+      new Estados({ name: "Pendiente" }).save(),
+      new Estados({ name: "Aceptado" }).save(),
+      new Estados({ name: "Rechazado" }).save(),
+    ]);
+    console.log("* => Estados creados exitosamente");
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 /**
  * Crea los usuarios por defecto en la base de datos.
@@ -63,4 +82,5 @@ async function createUsers() {
 module.exports = {
   createRoles,
   createUsers,
+  createEstados,
 };
