@@ -1,4 +1,4 @@
 //string de estados de una postulacion a un subsidios
-const ESTADOS = ["pendiente","aceptado", "rechazado"];
+const ESTADOS = ["Pendiente","Aprobada", "Rechazada"];
 
 module.exports = ESTADOS;

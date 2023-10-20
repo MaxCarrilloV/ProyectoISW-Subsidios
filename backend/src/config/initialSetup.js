@@ -35,8 +35,8 @@ async function createEstados() {
 
     await Promise.all([
       new Estados({ name: "Pendiente" }).save(),
-      new Estados({ name: "Aceptado" }).save(),
-      new Estados({ name: "Rechazado" }).save(),
+      new Estados({ name: "Aprobada" }).save(),
+      new Estados({ name: "Rechazada" }).save(),
     ]);
     console.log("* => Estados creados exitosamente");
   } catch (error) {

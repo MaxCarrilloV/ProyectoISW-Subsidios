@@ -4,7 +4,8 @@ const evaluacionSchema = new mongoose.Schema({
   postulacion: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Postulacion', // Referencia a la postulación evaluada
-    required: true
+    required: true,
+    unique: true,
   },
   evaluador: {
     type: mongoose.Schema.Types.ObjectId,

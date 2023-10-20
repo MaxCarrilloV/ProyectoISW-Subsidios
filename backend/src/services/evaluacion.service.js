@@ -17,6 +17,10 @@ async function createEvaluacion(evaluacion) {
 
     const evaluadorExistente = await User.findById(evaluador);
     if (!evaluadorExistente) return [null, "El evaluador no existe"];
+
+    //verificar que la postulacion ya fue evaluada
+    const evaluacionExistente = await Evaluacion.findOne({ postulacion });
+    if (evaluacionExistente) return [null, "La postulación ya fue evaluada"];
     
     if (!await isAdminCheck(evaluadorExistente)) {
       return [null, "El evaluador debe ser un usuario con rol 'admin'"];
