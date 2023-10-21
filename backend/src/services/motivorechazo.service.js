@@ -16,7 +16,7 @@ async function createMotivoRechazo(motivorechazo) {
         if(!evaluacionModel.decision === "Rechazada") return [null, "La postulación no fue rechazada"];
 
         //Verificar si ya se ha creado el motivo de rechazo
-        const motivoExistente = await motivorechazo.findOne({ postulacion });
+        const motivoExistente = await MotivoRechazo.findOne({ postulacion });
         if (motivoExistente) return [null, "El motivo de rechazo ya existe"];
 
         const nuevaMotivoRechazo = new MotivoRechazo({
