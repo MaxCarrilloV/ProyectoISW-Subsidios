@@ -15,7 +15,5 @@ const rechazoSchema = new mongoose.Schema({
     },
 });
 
-const Rechazo = mongoose.model('Rechazo', rechazoSchema);
-module.exports = Rechazo;
-
+module.exports = mongoose.model('MotivoRechazo', rechazoSchema);
 
