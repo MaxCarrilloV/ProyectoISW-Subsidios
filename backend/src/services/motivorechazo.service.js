@@ -31,6 +31,17 @@ async function createMotivoRechazo(motivorechazo) {
     }
 }
 
-module.exports = { createMotivoRechazo };
+async function getMotivoRechazo(postulacion) {
+    try {
+        const motivoRechazo = await MotivoRechazo.findOne({ postulacion });
+        if (!motivoRechazo) return [null, "El motivo de rechazo no existe"];
+        return [motivoRechazo, null];
+    } catch (error) {
+        handleError(error, "motivorechazo.service -> getMotivoRechazo");
+    }
+}
+
+
+module.exports = { createMotivoRechazo, getMotivoRechazo };
 
 
