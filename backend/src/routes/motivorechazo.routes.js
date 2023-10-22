@@ -11,6 +11,7 @@ const router = express.Router();
 // Define el middleware de autenticación para todas las rutas
 router.use(authenticationMiddleware);
  
+router.get("/:id", MotivoRechazoController.getMotivoRechazo);
 router.post("/",authorizationMiddleware.isAdmin, MotivoRechazoController.createMotivoRechazo);
  
 module.exports = router;
