@@ -30,6 +30,18 @@ async function createMotivoRechazo(req, res) {
     }
 }
 
-module.exports = {
-    createMotivoRechazo,
-};
+async function getMotivoRechazo(req, res) {
+    try {
+        const { params } = req;
+        const { id } = params;
+        const [motivoRechazo, motivoRechazoError] = await MotivoRechazoService.getMotivoRechazo(id);
+        if (motivoRechazoError) return respondError(req, res, 400, motivoRechazoError);
+        if (!motivoRechazo) return respondError(req, res, 400, "El motivo de rechazo no existe");
+        respondSuccess(req, res, 200, motivoRechazo);
+    } catch (error) {
+        handleError(error, "motivorechazo.controller -> getMotivoRechazo");
+        respondError(req, res, 500, "No se obtuvo el motivo de rechazo");
+    }
+}
+
+module.exports = { createMotivoRechazo, getMotivoRechazo };
