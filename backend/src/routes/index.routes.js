@@ -14,6 +14,9 @@ const evaluacionRoutes = require("./evaluacion.routes.js");
 //Enrutador de motivos de rechazo
 const motivorechazoRoutes = require("./motivorechazo.routes.js");
 
+//Enrutador de apelaciones
+const apelacionRoutes = require("./apelacion.routes.js");
+
 /** Middleware de autenticación */
 const authenticationMiddleware = require("../middlewares/authentication.middleware.js");
 
@@ -29,6 +32,10 @@ router.use("/evaluacion", authenticationMiddleware, evaluacionRoutes);
 
 // Define la ruta para los motivos de rechazo /api/motivorechazo
 router.use("/motivorechazo", authenticationMiddleware, motivorechazoRoutes);
+
+//Define la ruta para las apelaciones
+
+router.use("/apelacion", authenticationMiddleware, apelacionRoutes);
 
 // Exporta el enrutador
 module.exports = router;
