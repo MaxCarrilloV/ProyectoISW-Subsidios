@@ -41,7 +41,16 @@ async function getMotivoRechazo(postulacion) {
     }
 }
 
+async function getMotivoRechazos(postulacion){
+    try {
+        const motivoRechazos = await MotivoRechazo.find();
+        if (!motivoRechazos) return [null, "No existen motivos de rechazo"];
+        return [motivoRechazos, null];
+    } catch (error) {
+        handleError(error, "motivorechazo.service -> getMotivoRechazos");
+    }
+}
 
-module.exports = { createMotivoRechazo, getMotivoRechazo };
+module.exports = { createMotivoRechazo, getMotivoRechazo, getMotivoRechazos };
 
 
