@@ -37,5 +37,8 @@ router.use("/motivorechazo", authenticationMiddleware, motivorechazoRoutes);
 
 router.use("/apelacion", authenticationMiddleware, apelacionRoutes);
 
+router.use("/subsidios", subsidioRoutes);
+router.use("/category", categoryRoutes);
+
 // Exporta el enrutador
 module.exports = router;

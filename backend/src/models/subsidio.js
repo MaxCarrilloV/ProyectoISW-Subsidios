@@ -20,5 +20,5 @@ const subsidioSchema = new mongoose.Schema({
 
 // Crea el modelo de datos 'Subsidio' a partir del esquema 'subsidioSchema'
 const Subsidio = mongoose.model("Subsidio", subsidioSchema);
-
 module.exports = Subsidio;
+
