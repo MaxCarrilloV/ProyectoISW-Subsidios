@@ -37,5 +37,12 @@ router.use("/motivorechazo", authenticationMiddleware, motivorechazoRoutes);
 
 router.use("/apelacion", authenticationMiddleware, apelacionRoutes);
 
+
+const subsidioRoutes = require("./subsidio.routers.js");
+const categoryRoutes = require("./category.routes.js");
+
+router.use("/subsidios", subsidioRoutes);
+router.use("/category", categoryRoutes);
+
 // Exporta el enrutador
 module.exports = router;
