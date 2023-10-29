@@ -46,10 +46,10 @@ async function createSubsidio(subsidio) {
 *@param {Object} req - Objeto de petición
 *@param {Object} res - Objeto de respuesta
 */
-async function getSubsidioscategory() {
-  const { id_cat } = req.params
-   try {
-    const subsidios = await Subsidio.find({ category: id_cat});
+async function getSubsidioscategory(id) {
+
+  try {
+    const subsidios = await Subsidio.find({ category: id });
     if (!subsidios) return [null, "No hay subsidios"];
     console.log(subsidios)
     return [subsidios, null];

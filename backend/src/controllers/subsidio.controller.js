@@ -47,8 +47,9 @@ async function createSubsidio(req, res) {
  * 
 */
 async function getSubsidioscategory(req, res) {
+  const { id } = req.params  
   try {
-    const [subsidios, errorSubsidios] = await subsidioService.getSubsidios(); 
+    const [subsidios, errorSubsidios] = await subsidioService.getSubsidioscategory(id); 
     if (errorSubsidios) return respondError(req, res, 404, errorSubsidios); 
   
     subsidios.length === 0
