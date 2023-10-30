@@ -14,6 +14,8 @@ async function createEvaluacion(evaluacion) {
     // Verificar si la postulación existe antes de crear la evaluación
     const postulacionExistente = await Postulacion.findById(postulacion);
     if (!postulacionExistente) return [null, "La postulación no existe"];
+    postulacionExistente.estado = decision;
+    
 
     const evaluadorExistente = await User.findById(evaluador);
     if (!evaluadorExistente) return [null, "El evaluador no existe"];
@@ -32,7 +34,7 @@ async function createEvaluacion(evaluacion) {
       decision,
       observaciones,
     });
-
+    await postulacionExistente.updateOne(postulacionExistente);
     await nuevaEvaluacion.save();
     
 

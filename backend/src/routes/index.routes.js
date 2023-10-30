@@ -40,9 +40,11 @@ router.use("/apelacion", authenticationMiddleware, apelacionRoutes);
 
 const subsidioRoutes = require("./subsidio.routers.js");
 const categoryRoutes = require("./category.routes.js");
+const postulacionRoutes = require("./postulacion.routes.js");
 
 router.use("/subsidios", subsidioRoutes);
 router.use("/category", categoryRoutes);
+router.use("/postulacion", postulacionRoutes);
 
 // Exporta el enrutador
 module.exports = router;
