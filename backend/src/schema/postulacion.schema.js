@@ -16,16 +16,13 @@ const postulacionBodySchema = Joi.object({
             "any.required": "El subsidio es obligatorio.",
             "string.base": "El subsidio debe ser de tipo string.",
         }),
-
-    
-
         documentos: Joi.array().items(Joi.string()).required().messages({
             "array.empty": "Los documentos no pueden estar vacíos.",
             "any.required": "Los documentos son obligatorios.",
             "array.base": "Los documentos deben ser de tipo array.",
         }),
 
-    // Otras propiedades del modelo Postulacion, si las tienes.
+    estado: Joi.string(),
 }).messages({
     "object.unknown": "No se permiten propiedades adicionales.",
 });

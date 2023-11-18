@@ -10,9 +10,9 @@ const router = express.Router();
 router.use(authenticationMiddleware);
 
 // Define las rutas para las evaluaciones
-router.get("/", evaluacionController.getEvaluaciones);
+router.get("/", authorizationMiddleware.isAdmin, evaluacionController.getEvaluaciones);
 router.post("/", authorizationMiddleware.isAdmin, evaluacionController.createEvaluacion);
-router.get("/:id", evaluacionController.getEvaluacionById);
+router.get("/:id",authorizationMiddleware.isAdmin, evaluacionController.getEvaluacionById);
 router.put("/:id", authorizationMiddleware.isAdmin, evaluacionController.updateEvaluacion);
 router.delete("/:id", authorizationMiddleware.isAdmin, evaluacionController.deleteEvaluacion);
 

@@ -26,7 +26,7 @@ async function createPostulacion(postData,req,res) {
             if (error) {
                 return [null, "Error al subir archivos"];
             }
-            const { postulante, subsidio, monto, documentos } = postData;
+            const { postulante, subsidio } = postData;
     
     // Validar que el postulante exista
             const postulanteExistente = await Usuario.findById(postulante);
@@ -39,17 +39,12 @@ async function createPostulacion(postData,req,res) {
             return [null, "El subsidio no existe"];
             }
 
-            // Validar que el monto sea un número
-            if (isNaN(monto)) {
-            return [null, "El monto debe ser un número"];
-            }
-
             // Crear la nueva postulación
             const newPostulacion = new Postulacion({
             postulante,
             subsidio,
             monto,
-            documentos,
+            documentos: req.files,
             });
 
             await newPostulacion.save();

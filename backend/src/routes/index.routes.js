@@ -46,5 +46,10 @@ router.use("/subsidios", subsidioRoutes);
 router.use("/category", categoryRoutes);
 router.use("/postulacion", postulacionRoutes);
 
+//enrutador de criterios
+const criterioRoutes = require("./criterio.routes.js");
+router.use("/criterio", authenticationMiddleware, criterioRoutes);
+
+
 // Exporta el enrutador
 module.exports = router;

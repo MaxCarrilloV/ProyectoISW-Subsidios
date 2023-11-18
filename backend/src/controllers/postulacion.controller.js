@@ -38,14 +38,13 @@ async function createPostulacion(req, res) {
                 return respondError(req, res, 400, "Error al subir archivos");
             }
             const { body } = req;
-            console.log(body);
             const { postulante, subsidio, monto, documentos } =  req.body;
 
             const nuevaPostulacion = new Postulacion({
                 postulante,
                 subsidio,
                 monto,
-                documentos,
+                documentos: req.files.map((file) => file.filename),
                
             });
 
