@@ -1,5 +1,5 @@
 const Postulacion = require('../models/postulacion.model');
-const Usuario = require('../models/user.model');
+const Postulante = require('../models/postulante.model');
 const Subsidio = require('../models/subsidio.js');
 const subida = require("../config/Multer.config");
 
@@ -28,8 +28,7 @@ async function createPostulacion(postData,req,res) {
             }
             const { postulante, subsidio } = postData;
     
-    // Validar que el postulante exista
-            const postulanteExistente = await Usuario.findById(postulante);
+            const postulanteExistente = await Postulante.findById(postulante);
             if (!postulanteExistente) {
             return [null, "El postulante no existe"];
             }

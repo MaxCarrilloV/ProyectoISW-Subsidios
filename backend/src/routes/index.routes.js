@@ -50,6 +50,10 @@ router.use("/postulacion", postulacionRoutes);
 const criterioRoutes = require("./criterio.routes.js");
 router.use("/criterio", authenticationMiddleware, criterioRoutes);
 
+//enrutador de postulantes
+const postulanteRoutes = require("./postulante.routes.js");
+router.use("/postulante", authenticationMiddleware, postulanteRoutes);
+
 
 // Exporta el enrutador
 module.exports = router;

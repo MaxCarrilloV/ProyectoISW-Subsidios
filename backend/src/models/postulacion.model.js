@@ -4,7 +4,7 @@ const ESTADOS = require('../constants/estado.constants');
 const postulacionSchema = new mongoose.Schema({
   postulante: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', 
+    ref: 'Postulante', 
     required: true,
   },
   subsidio: {
@@ -29,4 +29,4 @@ const postulacionSchema = new mongoose.Schema({
   },
 });
 
-  module.exports = mongoose.model('Postulacion', postulacionSchema);
+module.exports = mongoose.model('Postulacion', postulacionSchema);
