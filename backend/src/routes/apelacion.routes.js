@@ -1,4 +1,5 @@
-//Rutas de Apelacion
+/* eslint-disable max-len */
+// Rutas de Apelacion
 "use strict";
 // Importa el modulo 'express' para crear las rutas
 const express = require("express");
@@ -23,6 +24,7 @@ router.get("/", authorizationMiddleware.isAdmin, apelacionController.getApelacio
 router.post("/", apelacionController.createApelacion);
 router.get("/:id", authorizationMiddleware.isAdmin, apelacionController.getApelacionById);
 router.get("/postulacion/:id", authorizationMiddleware.isAdmin, apelacionController.getApelacionByPostulacion);
+router.delete("/:id", authorizationMiddleware.isAdmin, apelacionController.deleteApelacion);
 
 // Exporta el enrutador de apelaciones
 module.exports = router;

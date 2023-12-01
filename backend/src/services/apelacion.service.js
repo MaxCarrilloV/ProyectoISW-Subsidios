@@ -1,60 +1,65 @@
-//Servicio para la tabla apelacion
+// Servicio para la tabla apelacion
 
-const apelacionModel = require("../models/Apelacion.model");
+const Apelacion = require("../models/Apelacion.model");
 const motivorechazoModel = require("../models/motivorechazo.model");
-const subida = require("../config/Multer.config");
 
+// eslint-disable-next-line require-jsdoc
 async function getApelaciones() {
-  try {
-    const apelaciones = await apelacionModel.find();
-    return apelaciones;
-  } catch (error) {
-    console.log(error);
-    throw new Error(error);
-  }
-}
-
-async function getApelacionById(id) {
     try {
-        const apelacionById = await apelacionModel.findById(id);
-        return apelacionById;
+        const apelaciones = await Apelacion.find();
+        return [apelaciones, null];
     } catch (error) {
-        console.log(error);
-        throw new Error(error);
+        return [null, error];
     }
 }
 
+
+// eslint-disable-next-line require-jsdoc
+async function getApelacionById(id) {
+    try {
+        const apelacionById = await Apelacion.findById(id);
+        return [apelacionById, null];
+    } catch (error) {
+        return [null, error];
+    }
+}
+
+// eslint-disable-next-line require-jsdoc
 async function getApelacionByPostulacion(id) {
     try {
-        const apelacionByPostucion = await apelacionModel.find({postulacion: id});
-        return apelacionByPostucion;
+        const apelacionByPostucion = await Apelacion.find({ postulacion: id });
+        return [apelacionByPostucion, null];
     } catch (error) {
-        console.log(error);
-        throw new Error(error);
+        return [null, error];
     }
 }   
 
-async function createApelacion(apelacionData, req, res) {
+
+// eslint-disable-next-line require-jsdoc
+async function deleteApelacion(id) {
     try {
-        // Utiliza el middleware de subida de Multer antes de procesar la apelación
-        subida(req, res, async (error) => {
-            if (error) {
-                return [null, "Error al subir archivos"];
-            }
-            const { postulacionrechazada, comentario } = apelacionData;
-            const postulacionExistente = await motivorechazoModel.findById(postulacion);
-            if (!postulacionExistente) return [null, "La postulación no existe"];
-            const nuevaApelacion = new apelacionModel({
-                postulacionrechazada,
-                documentos: req.files,
-                comentario,
-            });
-            await nuevaApelacion.save();
-            return [nuevaApelacion, null];
-        });
+        const apelacionById = await Apelacion.findByIdAndDelete(id);
+        return [apelacionById, null];
     } catch (error) {
-        console.log(error);
-        throw new Error(error);
+        return [null, error];
+    }
+}
+// eslint-disable-next-line require-jsdoc
+async function createApelacion(data) {
+    try {
+        const { postulacionrechazada, documentos, comentario } = data;
+        const [motivo, motivoError] = await motivorechazoModel.findById(postulacionrechazada);
+        if (motivoError) throw new Error(motivoError);
+        if (!motivo) throw new Error("El motivo no existe");
+        const apelacion = new apelacionModel({
+            postulacionrechazada,
+            documentos,
+            comentario,
+        });
+        const apelacionSaved = await apelacion.save();
+        return [apelacionSaved, null];
+    } catch (error) {
+        return [null, error];
     }
 }
 
@@ -63,5 +68,6 @@ module.exports = {
     getApelacionById,
     getApelacionByPostulacion,
     createApelacion,
+    deleteApelacion,
 };
 
