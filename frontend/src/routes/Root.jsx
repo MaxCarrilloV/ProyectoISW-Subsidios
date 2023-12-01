@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/auth.service';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 
+
 function Root() {
   return (
     <AuthProvider>
@@ -20,16 +21,22 @@ function PageRoot() {
   };
 
   const { user } = useAuth();
-
   return (
     <div>
-      <div>
+      {user.roles.name === 'admin'?(<div>
         <h1>Aqui deberia ir un header</h1>
-        <p>Estas logeado como: {user.email}</p>
+        <p>Estas logeado como: Evaluador</p>
         <button onClick={handleLogout}>Cerrar sesion</button>
-      </div>
+      </div>) : (<div>
+        <h1>Aqui deberia ir un header</h1>
+        <p>Estas logeado como: Postulante</p>
+        <button onClick={handleLogout}>Cerrar sesion</button>
+      </div>)}
+      
       <Outlet />
     </div>
+    
+    
   );
 }
 

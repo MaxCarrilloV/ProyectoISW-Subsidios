@@ -29,7 +29,7 @@ async function login(user) {
     if (!userFound) {
       return [null, null, "El usuario y/o contraseña son incorrectos"];
     }
-
+    console.log(userFound);
     const matchPassword = await User.comparePassword(
       password,
       userFound.password,
@@ -54,8 +54,9 @@ async function login(user) {
         expiresIn: "7d", // 7 días
       },
     );
-
-    return [accessToken, refreshToken, null];
+    const userId = userFound._id.toString();
+    console.log(userId);
+    return [userId , accessToken, refreshToken, null];
   } catch (error) {
     handleError(error, "auth.service -> signIn");
   }

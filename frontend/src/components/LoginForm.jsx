@@ -18,16 +18,19 @@ function LoginForm() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Control name="email" type="email" {...register('email', { required: true })} />
+    <Form className='mt-2' onSubmit={handleSubmit(onSubmit)}>
+      <Form.Group className="mb-3"  controlId="formBasicEmail">
+        <Form.Control  name="email" type="email" placeholder='Email address' {...register('email', { required: true })} />
       </Form.Group>
 
       <Form.Group className="mb-10" controlId="formBasicPassword">
-        <Form.Control name="password" type="password" {...register('password', { required: true })} />
+        <Form.Control name="password" type="password" placeholder='Password' {...register('password', { required: true })} />
       </Form.Group>
       {errors.exampleRequired && <span>This field is required</span>}
-      <Button type="submit" className='mx-5 my-2' > Iniciar sesion</Button>
+      <Form.Group  className="mb-10" >
+        <Button type="submit" className='my-2 mx-5'  > Iniciar sesion</Button>
+      </Form.Group>
+     
     </Form>
   );
 }
