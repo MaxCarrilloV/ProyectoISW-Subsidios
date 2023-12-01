@@ -1,6 +1,6 @@
 import LoginForm from '../components/LoginForm';
 import { useNavigate } from 'react-router-dom';
-
+import Stack from 'react-bootstrap/Stack';
 function Login() {
   const navigate = useNavigate();
 
@@ -14,10 +14,10 @@ function Login() {
   }
 
   return (
-    <div>
-      <h2>Inicia sesion!</h2>
+    <Stack className="align-items-center justify-content-center" style={{height:'100vh'}} >
+      <h2>Inicia sesion</h2>
       <LoginForm />
-    </div>
+    </Stack>
   );
 }
 
