@@ -11,7 +11,7 @@ const postulanteBodySchema = joi.object({
         "any.required": "El nombre es obligatorio.",
         "string.base": "El nombre debe ser de tipo string.",
     }),
-    rut: Joi.string().pattern(/^\d{1,2}\.\d{3}\.\d{3}[-][0-9kK]{1}$/).required().messages({
+    rut: joi.string().pattern(/^\d{1,2}\.\d{3}\.\d{3}[-][0-9kK]{1}$/).required().messages({
         "string.empty": "El rut no puede estar vacío.",
         "any.required": "El rut es obligatorio.",
         "string.base": "El rut debe ser de tipo string.",
@@ -25,7 +25,7 @@ const postulanteBodySchema = joi.object({
         "string.empty": "La dirección no puede estar vacía.",
         "any.required": "La dirección es obligatoria.",
         "string.base": "La dirección debe ser de tipo string.",
-    })
+    }),
 
 }).messages({
     "object.unknown": "No se permiten propiedades adicionales.",
