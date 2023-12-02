@@ -8,7 +8,9 @@ const subida = require("../config/Multer.config");
  */
 async function getPostulaciones() {
   try {
-    const postulaciones = await Postulacion.find();
+    const postulaciones = await Postulacion.find()
+    .populate("subsidio")
+    .exec();
     return [postulaciones, null];
   } catch (error) {
     return [null, error];

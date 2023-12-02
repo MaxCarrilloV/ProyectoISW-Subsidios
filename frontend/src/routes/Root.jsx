@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/auth.service';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import NavbarEvaluador  from '../components/navbarEvaluador';
+import NavbarPostulante  from '../components/NavbarPostulante';
 
 function Root() {
   return (
@@ -15,20 +16,10 @@ function Root() {
 function PageRoot() {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/auth');
-  };
-
   const { user } = useAuth();
   return (
     <div>
-      {user.roles.name === 'admin'?(<NavbarEvaluador navigate={navigate}/>) : (<div>
-        <h1>Aqui deberia ir un header</h1>
-        <p>Estas logeado como: Postulante</p>
-        <button onClick={handleLogout}>Cerrar sesion</button>
-      </div>)}
-      
+      {user.roles.name === 'admin'?(<NavbarEvaluador navigate={navigate}/>) : (<NavbarPostulante navigate={navigate}/>)} 
       <Outlet />
     </div>
     

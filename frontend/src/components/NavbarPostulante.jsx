@@ -50,7 +50,7 @@ function NavbarEvaluador({navigate} ) {
         </Nav>
         <Navbar.Collapse className="justify-content-end py-0">
           <Navbar.Text className='mx-2 my-0'>
-            Registrado como: Evaluador 
+            Registrado como: Postulante
           </Navbar.Text>
           <Navbar.Text className="py-0">
             <Button onClick={handleLogout}>Cerrar sesion</Button>
