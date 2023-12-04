@@ -13,25 +13,24 @@ async function getPostulantes() {
 async function createPostulante(postulanteData) {
     try {
         const { user , nombre , fechaNacimiento} = postulanteData;
-
+       
         const userExistente = await usuario.findById(user);
         if (!userExistente) {
             return [null, "El usuario no existe"];
         }
-
+        
         if (/\d/.test(nombre)) {
             return [null, "El nombre no puede contener números"];
         }
-
+        
         const fechaNacimientoError = validateFechaNacimiento(fechaNacimiento);
         if (fechaNacimientoError) {
             return [null, fechaNacimientoError];
         }
-
+        
         if (!(await isPostulanteCheck(userExistente))) {
             return [null, "El usuario debe ser un usuario con rol 'user'"];
         }
-
         const newPostulante = new Postulante(postulanteData);
         await newPostulante.save();
         return [newPostulante, null];
@@ -71,8 +70,7 @@ function validateFechaNacimiento(fechaNacimiento) {
 
 async function isPostulanteCheck(postulanteId) {
     try {
-      const postulante = await User.findById(postulanteId);
-      const roles = await Role.find({ _id: { $in: postulante.roles } });
+      const roles = await Role.find({ _id: { $in: postulanteId.roles } });
       for (let i = 0; i < roles.length; i++) {
         if (roles[i].name === "user") {
           return true; 

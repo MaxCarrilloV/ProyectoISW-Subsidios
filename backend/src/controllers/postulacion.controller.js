@@ -29,29 +29,29 @@ async function getPostulaciones(req, res) {
  * Crea una nueva postulación
  * @param {Object} req - Objeto de petición
  * @param {Object} res - Objeto de respuesta
+ * 
  */
+
 async function createPostulacion(req, res) {
     try {
-        // Utiliza el middleware de subida de Multer antes de procesar la apelación
         subida(req, res, async (error) => {
             if (error) {
-                return respondError(req, res, 400, "Error al subir archivos");
+                return respondError(req, res, 400, error);
             }
             const { body } = req;
-            const { postulante, subsidio, monto, documentos } =  req.body;
-
+            const { postulante, subsidio } =  body;
+            
             const nuevaPostulacion = new Postulacion({
                 postulante,
                 subsidio,
-                monto,
                 documentos: req.files.map((file) => file.filename),
                
             });
 
-            // Guarda la apelación en la base de datos
+            
             await nuevaPostulacion.save();
 
-            // Envía una respuesta exitosa
+    
             respondSuccess(req, res, 201, nuevaPostulacion);
         });
     } catch (error) {
@@ -60,6 +60,7 @@ async function createPostulacion(req, res) {
         respondError(req, res, 500, "No se creo la Postulacion");
     }
 }
+
 
 /**
  * Obtiene una postulación por su id

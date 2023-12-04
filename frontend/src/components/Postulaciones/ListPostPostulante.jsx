@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getPostulaciones  } from '../../services/postulaciones.service';
 import PostPostulante from './PostPostulante';
-import { Table, Pagination } from "react-bootstrap";
+import { Table, Pagination, Button, Stack } from "react-bootstrap";
 
 const ListPostPostulante = ({user}) => {
     const [postulaciones, setPostulaciones] = useState([]);
@@ -16,8 +16,13 @@ const ListPostPostulante = ({user}) => {
 
     useEffect(() => {
         getPostulaciones().then((data) => {
-                const postulacionesOrdenadas = ordenarPostulaciones(data);
-                setPostulaciones(postulacionesOrdenadas);   
+            if(data) 
+            for(let i=0; i<data.length; i++) {
+                if(user.id === data[i].postulante){
+                    const postulacionesOrdenadas = ordenarPostulaciones(data);
+                    setPostulaciones(postulacionesOrdenadas);   
+                }
+            }
         });
     }, []);
     
@@ -47,8 +52,10 @@ const ListPostPostulante = ({user}) => {
     
     return (
         <div className="container">
-        <h1 className='mt-2' >Postulaciones </h1>
-        
+        <Stack direction="horizontal" className='mt-3' gap={3}>
+            <h1 >Postulaciones </h1>
+            <Button className="p-2 ms-auto" href='Postular' >Postular a subsidio</Button>
+        </Stack>
         <Table  bordered  striped="columns" className='mb-0 border-primary items-center'>
             <thead>
                 <tr>

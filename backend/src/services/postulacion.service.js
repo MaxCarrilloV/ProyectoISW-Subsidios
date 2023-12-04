@@ -9,6 +9,7 @@ const subida = require("../config/Multer.config");
 async function getPostulaciones() {
   try {
     const postulaciones = await Postulacion.find()
+    .populate("postulante")
     .populate("subsidio")
     .exec();
     return [postulaciones, null];
@@ -28,7 +29,7 @@ async function createPostulacion(postData,req,res) {
             if (error) {
                 return [null, "Error al subir archivos"];
             }
-            const { postulante, subsidio } = postData;
+            const { postulante, subsidio,documentos } = postData;
     
             const postulanteExistente = await Postulante.findById(postulante);
             if (!postulanteExistente) {
@@ -39,7 +40,6 @@ async function createPostulacion(postData,req,res) {
             if (!subsidioExistente) {
             return [null, "El subsidio no existe"];
             }
-
             // Crear la nueva postulación
             const newPostulacion = new Postulacion({
             postulante,

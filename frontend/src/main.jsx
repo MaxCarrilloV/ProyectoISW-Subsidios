@@ -8,7 +8,7 @@ import Login from './routes/Login.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Postulaciones  from './routes/Postulaciones';
 import PrivateRoute  from './routes/PrivateRoute ';
-
+import Postular from './routes/Postular';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +23,11 @@ const router = createBrowserRouter([
       {
         path: '/postulaciones',
         element: <PrivateRoute element={<Postulaciones />} roles={['admin', 'user']} />,
+        
+      },
+      {
+        path: '/postular',
+        element: <PrivateRoute element={<Postular />} roles={['user']} />,
         
       },
     ],

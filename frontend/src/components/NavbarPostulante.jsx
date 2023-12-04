@@ -47,6 +47,13 @@ function NavbarEvaluador({navigate} ) {
           >
             Postulaciones
           </Nav.Link>
+          <Nav.Link
+            href="/Postular"
+            onClick={(e) => handleNavItemClick(e,'Postular')}
+            style={getLinkStyle('Postular')}
+          >
+            Postular
+          </Nav.Link>
         </Nav>
         <Navbar.Collapse className="justify-content-end py-0">
           <Navbar.Text className='mx-2 my-0'>
