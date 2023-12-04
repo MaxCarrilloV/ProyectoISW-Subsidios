@@ -18,7 +18,7 @@ const subida = multer({
         if (mimetype && extname) {
             return cb(null, true);
         }
-        cb("Error: Archivo debe ser de un tipo válido");
+        cb("Error: Archivo debe ser una imagen o PDF");
     },
 }).array("documentos", 10);
 
