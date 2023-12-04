@@ -18,7 +18,9 @@ const ListPostPostulante = ({user}) => {
         getPostulaciones().then((data) => {
             if(data) 
             for(let i=0; i<data.length; i++) {
-                if(user.id === data[i].postulante){
+              let postulante = data[i].postulante;
+              let userid = postulante.user;
+                if(user.id === userid){
                     const postulacionesOrdenadas = ordenarPostulaciones(data);
                     setPostulaciones(postulacionesOrdenadas);   
                 }
@@ -27,7 +29,6 @@ const ListPostPostulante = ({user}) => {
     }, []);
     
     const ordenarPostulaciones = (data) => {
-        console.log(data);
         const ordenEstado = {
           Pendiente: 3,
           Rechazada: 2,
@@ -53,7 +54,7 @@ const ListPostPostulante = ({user}) => {
     return (
         <div className="container">
         <Stack direction="horizontal" className='mt-3' gap={3}>
-            <h1 >Postulaciones </h1>
+            <h1 >Postulaciones Realizadas</h1>
             <Button className="p-2 ms-auto" href='Postular' >Postular a subsidio</Button>
         </Stack>
         <Table  bordered  striped="columns" className='mb-0 border-primary items-center'>
@@ -61,6 +62,7 @@ const ListPostPostulante = ({user}) => {
                 <tr>
                     <th scope="col" >Estado</th>
                     <th scope="col" >Subsidio</th>
+                    <th>Fecha de envió</th>
                     <th scope="col">Opciones</th>
                 </tr>
             </thead>

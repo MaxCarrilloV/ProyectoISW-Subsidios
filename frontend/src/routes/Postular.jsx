@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Stack } from "react-bootstrap";
+import { Button, Form, Stack, Alert } from "react-bootstrap";
 import { useForm } from 'react-hook-form';
 import {CreatePostulacion} from '../services/postulaciones.service';
 import { useAuth } from '../context/AuthContext';
@@ -10,6 +10,8 @@ import { getSubsidios } from '../services/subsidios.service';
 
 function Postular() {
     const { user } = useAuth();
+    const [showAlert, setShowAlert] = useState(false);
+    const [showAlertD, setShowAlertD] = useState(false);
 
     const [subsidios, setSubsidios] = useState([]);
     const {
@@ -40,8 +42,18 @@ function Postular() {
         delete data.documentos2;
         delete data.documentos3;
         console.log(data);
-        CreatePostulacion(data);
-        // reset();
+        if(CreatePostulacion(data)){
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 4000);
+            reset();
+        }else{
+            setShowAlertD(true);
+            setTimeout(() => {
+                setShowAlertD(false);
+            }, 4000);
+        };
     };
 
     function validarRUT(rut) {
@@ -152,11 +164,18 @@ function Postular() {
                     Ingresa un archivo con extension .PDF
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group   >
-                    <Button type="submit"> Enviar postulación </Button>
+                <Alert variant="success" show={showAlert} onClose={() => setShowAlert(false)} dismissible >
+                ¡La postulacion se envió correctamnete!
+                </Alert>
+                <Alert variant="warning" show={showAlertD} onClose={() => setShowAlertD(false)} dismissible>
+                    ¡Hubo un error en enviar la postulación!
+                </Alert>
+                <Form.Group   className='d-flex justify-content-center '>
+                    <Button type="submit" className='px-5'>  Enviar postulación </Button>
                 </Form.Group>
 
             </Form>
+           
         </Stack>
     );
 }

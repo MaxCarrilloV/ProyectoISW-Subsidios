@@ -22,7 +22,6 @@ const ListPostEvaluador = () => {
     }, []);
     
     const ordenarPostulaciones = (data) => {
-        console.log(data);
         const ordenEstado = {
           Pendiente: 1,
           Rechazada: 3,
@@ -54,6 +53,7 @@ const ListPostEvaluador = () => {
                 <tr>
                     <th scope="col" >Estado</th>
                     <th scope="col" >Subsidio</th>
+                    <th>Fecha de envió</th>
                     <th scope="col">Opciones</th>
                 </tr>
             </thead>

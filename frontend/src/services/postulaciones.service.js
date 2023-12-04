@@ -14,6 +14,7 @@ export const getPostulaciones = async () => {
 
 export const CreatePostulacion = async ({user,nombre,rut,fechaNacimiento,direccion,subsidio,documentos}) => {
   try {
+    
     const responsePost = await axios.post('/postulante', {
       user,
       nombre,
@@ -41,7 +42,7 @@ export const CreatePostulacion = async ({user,nombre,rut,fechaNacimiento,direcci
         });
         const { status } = response;
         if (status === 201) {
-          console.log('Postulacion creada');
+          return true;
         }
       
       
@@ -49,5 +50,47 @@ export const CreatePostulacion = async ({user,nombre,rut,fechaNacimiento,direcci
     }
   } catch (error) {
     console.log(error);
+    return false;
   }
 };
+
+export const deletePostulacion = async (id,idPostulante) => {
+  try {
+  
+    const response = await axios.delete(`/postulacion/${id}`);
+    const responsepostulante = await axios.delete(`/postulante/${idPostulante}`);
+    const { status } = response;
+    const { statuspostulante } = responsepostulante;
+    if (status === 200 && statuspostulante === 200) {
+      console.log('Postulacion eliminada');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const updatePostulacion = async ({user,postulacion,postulante,nombre,rut,fechaNacimiento,direccion,subsidio,documentos}) => {
+  try {
+    const responsePost = await axios.put(`/postulante/${postulante}`, {
+      user,
+      nombre,
+      rut,
+      fechaNacimiento,
+      direccion,
+    });
+    const { status } = responsePost;
+    if (status === 200) {
+      let formData = new FormData();
+      formData.append('postulante', postulante);
+      formData.append('subsidio', subsidio);
+      const response = await axios.put(`/postulacion/${postulacion}`, formData);
+      const { status } = response;
+      if (status === 200) {
+        return true;
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
