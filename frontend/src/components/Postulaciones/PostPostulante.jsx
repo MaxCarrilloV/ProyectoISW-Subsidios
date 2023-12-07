@@ -90,8 +90,9 @@ const PostPostulante = ({ postulacion }) => {
   const handleDelete = () => {
     let id = postulacion._id;
     let postulante = postulacion.postulante._id;
-    deletePostulacion(id,postulante);
-    document.location.reload();
+    if (deletePostulacion(id,postulante)){
+      document.location.reload();
+    }
     handleClose();
   }
 

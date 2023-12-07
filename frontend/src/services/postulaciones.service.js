@@ -62,9 +62,10 @@ export const deletePostulacion = async (id,idPostulante) => {
     const { status } = response;
     const { statuspostulante } = responsepostulante;
     if (status === 200 && statuspostulante === 200) {
-      console.log('Postulacion eliminada');
+      return true;
     }
   } catch (error) {
+    return false;
     console.log(error);
   }
 }
