@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '../context/AuthContext';
-import NavbarEvaluador  from '../components/navbarEvaluador';
+import NavbarEvaluador  from '../components/NavbarEvaluador';
 import NavbarPostulante  from '../components/NavbarPostulante';
 
 function Root() {
