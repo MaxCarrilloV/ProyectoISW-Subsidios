@@ -28,7 +28,7 @@ function LoginForm() {
       </Form.Group>
       {errors.exampleRequired && <span>This field is required</span>}
       <Form.Group  className="mb-10" >
-        <Button type="submit" className='my-2 mx-5'  > Iniciar sesion</Button>
+        <Button type="submit" className='my-2 mx-5'  > Iniciar sesión</Button>
       </Form.Group>
      
     </Form>

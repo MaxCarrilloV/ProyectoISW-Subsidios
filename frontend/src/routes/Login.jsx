@@ -15,7 +15,7 @@ function Login() {
 
   return (
     <Stack className="align-items-center justify-content-center" style={{height:'100vh'}} >
-      <h2>Iniciar sesion</h2>
+      <h2>Iniciar sesión</h2>
       <LoginForm />
     </Stack>
   );

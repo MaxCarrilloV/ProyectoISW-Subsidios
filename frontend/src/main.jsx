@@ -9,6 +9,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Postulaciones  from './routes/Postulaciones';
 import PrivateRoute  from './routes/PrivateRoute ';
 import Postular from './routes/Postular';
+import Subsidios from './routes/Subsidios';
+import Apelaciones from './routes/Apelaciones';
+import Category  from './routes/Category';
+import Motivo from './routes/Motivo';
+import Evaluar from './routes/Evaluar.jsx';
+import Evaluaciones from './routes/Evaluaciones.jsx';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +36,39 @@ const router = createBrowserRouter([
         element: <PrivateRoute element={<Postular />} roles={['user']} />,
         
       },
+      {
+        path: '/Subsidios',
+        element: <PrivateRoute element={<Subsidios />} roles={['admin', 'user']} />,
+        
+      },
+      {
+        path: '/Subsidios',
+        element: <PrivateRoute element={<Subsidios />} roles={['admin', 'user']} />,
+        
+      },
+      {
+        path: '/Apelar',
+        element: <PrivateRoute element={<Apelaciones />} roles={[ 'user']} />,
+        
+      },
+      {
+        path: '/Categorias',
+        element: <PrivateRoute element={<Category />} roles={[ 'admin']} />,
+        
+      },
+      {
+        path: '/Motivo',
+        element: <PrivateRoute element={<Motivo />} roles={[ 'admin']} />,
+      },
+      {
+        path: '/Evaluar',
+        element: <PrivateRoute element={<Evaluar />} roles={[ 'admin']} />,
+      },
+      {
+        path: '/Evaluaciones',
+        element: <PrivateRoute element={<Evaluaciones />} roles={[ 'admin']} />,
+      },
+      
     ],
   },
   {

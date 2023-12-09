@@ -41,11 +41,39 @@ function NavbarEvaluador({navigate} ) {
             Inicio
           </Nav.Link>
           <Nav.Link
+            href="/Subsidios"
+            onClick={(e) => handleNavItemClick(e,'Subsidios')}
+            style={getLinkStyle('Subsidios')}
+          >
+            Subsidios
+          </Nav.Link>
+          <Nav.Link
+            href="/categorias"
+            onClick={(e) => handleNavItemClick(e,'Categorias')}
+            style={getLinkStyle('Categorias')}
+          >
+            Categorias
+          </Nav.Link>
+          <Nav.Link
             href="/Postulaciones"
             onClick={(e) => handleNavItemClick(e,'Postulaciones')}
             style={getLinkStyle('Postulaciones')}
           >
             Postulaciones
+          </Nav.Link>
+          <Nav.Link
+            href="/Evaluaciones"
+            onClick={(e) => handleNavItemClick(e,'Evaluaciones')}
+            style={getLinkStyle('Evaluaciones')}
+          >
+            Evaluaciones
+          </Nav.Link>
+          <Nav.Link
+            href="/Motivo"
+            onClick={(e) => handleNavItemClick(e,'Motivo')}
+            style={getLinkStyle('Motivo')}
+          >
+            Motivo de rechazo
           </Nav.Link>
         </Nav>
         <Navbar.Collapse className="justify-content-end py-0">

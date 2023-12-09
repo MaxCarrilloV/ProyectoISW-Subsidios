@@ -41,6 +41,13 @@ function NavbarEvaluador({navigate} ) {
             Inicio
           </Nav.Link>
           <Nav.Link
+            href="/Subsidios"
+            onClick={(e) => handleNavItemClick(e,'Subsidios')}
+            style={getLinkStyle('Subsidios')}
+          >
+            Subsidios
+          </Nav.Link>
+          <Nav.Link
             href="/Postulaciones"
             onClick={(e) => handleNavItemClick(e,'Postulaciones')}
             style={getLinkStyle('Postulaciones')}
@@ -53,6 +60,13 @@ function NavbarEvaluador({navigate} ) {
             style={getLinkStyle('Postular')}
           >
             Postular
+          </Nav.Link>
+          <Nav.Link
+            href="/Apelar"
+            onClick={(e) => handleNavItemClick(e,'Apelar')}
+            style={getLinkStyle('Apelar')}
+          >
+            Apelar
           </Nav.Link>
         </Nav>
         <Navbar.Collapse className="justify-content-end py-0">
