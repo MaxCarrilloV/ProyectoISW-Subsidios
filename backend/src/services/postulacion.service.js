@@ -2,7 +2,8 @@ const Postulacion = require('../models/postulacion.model');
 const Postulante = require('../models/postulante.model');
 const Subsidio = require('../models/subsidio.js');
 const subida = require("../config/Multer.config");
-
+const fs = require("fs");
+const path = require("path");
 /**
  * Obtiene todas las postulaciones
  */
@@ -92,9 +93,25 @@ async function updatePostulacion(postulacionId, postData) {
  */
 async function deletePostulacion(postulacionId) {
   try {
+    const postulacion = await Postulacion.findById(postulacionId);
+
+    if (!postulacion) {
+      return null;
+    }
+
+    const { documentos } = postulacion;
+
+    // Eliminar los archivos de la postulación
+    documentos.forEach((documento) => {
+      fs.unlinkSync(path.join(__dirname, `../documentos/postulaciones/${documento}`));
+    });
+
+    // Eliminar la postulación de la base de datos
     const deletedPostulacion = await Postulacion.findByIdAndRemove(postulacionId);
+
     return deletedPostulacion;
   } catch (error) {
+    console.error(error);
     return null;
   }
 }
