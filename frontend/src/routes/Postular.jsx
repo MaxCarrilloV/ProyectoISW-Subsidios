@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Stack, Alert } from "react-bootstrap";
+import { Button, Form, Stack, Modal } from "react-bootstrap";
 import { useForm } from 'react-hook-form';
 import {CreatePostulacion} from '../services/postulaciones.service';
 import { useAuth } from '../context/AuthContext';
@@ -41,7 +41,6 @@ function Postular() {
         delete data.documentos1;
         delete data.documentos2;
         delete data.documentos3;
-        console.log(data);
         if(CreatePostulacion(data)){
             setShowAlert(true);
             setTimeout(() => {
@@ -164,12 +163,16 @@ function Postular() {
                     Ingresa un archivo con extension .PDF
                     </Form.Control.Feedback>
                 </Form.Group>
-                <Alert variant="success" show={showAlert} onClose={() => setShowAlert(false)} dismissible >
-                ¡La postulacion se envió correctamnete!
-                </Alert>
-                <Alert variant="warning" show={showAlertD} onClose={() => setShowAlertD(false)} dismissible>
-                    ¡Hubo un error en enviar la postulación!
-                </Alert>
+                <Modal  show={showAlert} onHide={() => setShowAlert(false)} >
+                    <Modal.Header style={{background:'#75b798'}} closeButton>
+                        <Modal.Title>¡La postulacion se envió correctamente!</Modal.Title>
+                    </Modal.Header>
+                </Modal>
+                <Modal show={showAlertD} onHide={() => setShowAlertD(false)}>
+                    <Modal.Header style={{background:'#ffc107'}} closeButton>
+                        <Modal.Title>¡Hubo un error en enviar la postulación, Complete y envie nuevamente la postulación!</Modal.Title>
+                    </Modal.Header>
+                </Modal>
                 <Form.Group   className='d-flex justify-content-center '>
                     <Button type="submit" className='px-5'>  Enviar postulación </Button>
                 </Form.Group>

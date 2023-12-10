@@ -131,12 +131,16 @@ const PostPostulante = ({ postulacion }) => {
             </Modal>
             <Modal show={showeditar}>
             <Form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data"  >
-            <Alert variant="success" show={showAlert} onClose={() => setShowAlert(false)} dismissible >
-                ¡La postulacion se editó correctamnete!
-            </Alert>
-            <Alert variant="warning" show={showAlertD} onClose={() => setShowAlertD(false)} dismissible>
-                ¡Hubo un error al editar la postulación!
-            </Alert>
+            <Modal  show={showAlert} onHide={() => setShowAlert(false)} >
+                  <Modal.Header style={{background:'#75b798'}}>
+                    <Modal.Title>¡La postulacion se editó correctamente!</Modal.Title>
+                  </Modal.Header>
+            </Modal>
+            <Modal  show={showAlertD} onHide={() => setShowAlertD(false)}>
+                  <Modal.Header style={{background:'#ffc107'}}>
+                    <Modal.Title>¡Hubo un error al editar la postulación!</Modal.Title>
+                  </Modal.Header>
+            </Modal>
                 <Modal.Header >
                   <Modal.Title>Editar Postulación</Modal.Title>
                 </Modal.Header>
