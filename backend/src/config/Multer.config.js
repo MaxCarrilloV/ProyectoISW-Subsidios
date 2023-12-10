@@ -12,7 +12,7 @@ const subida = multer({
     storage: almacenamiento,
     limits: { fileSize: 1000000 },
     fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png|pdf/;
+        const filetypes = /pdf/;
         const mimetype = filetypes.test(file.mimetype);
         const extname = filetypes.test(path.extname(file.originalname));
         if (mimetype && extname) {

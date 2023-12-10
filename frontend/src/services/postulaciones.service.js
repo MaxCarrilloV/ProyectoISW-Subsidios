@@ -95,3 +95,15 @@ export const updatePostulacion = async ({user,postulacion,postulante,nombre,rut,
     return false;
   }
 }
+
+export const getPostulacion = async (id) => {
+  try {
+    const response = await axios.get(`/postulacion/${id}`);
+    const { status, data } = response;
+    if (status === 200) {
+      return data.data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}

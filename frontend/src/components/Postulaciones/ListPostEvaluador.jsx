@@ -53,7 +53,9 @@ const ListPostEvaluador = () => {
                 <tr>
                     <th scope="col" >Estado</th>
                     <th scope="col" >Subsidio</th>
-                    <th>Fecha de envió</th>
+                    <th scope="col" >Postulante nombre</th>
+                    <th scope="col" >Postulante RUT</th>
+                    <th>Fecha de creación</th>
                     <th scope="col">Opciones</th>
                 </tr>
             </thead>

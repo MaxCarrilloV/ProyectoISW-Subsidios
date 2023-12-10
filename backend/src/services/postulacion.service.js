@@ -62,8 +62,11 @@ async function createPostulacion(postData,req,res) {
  */
 async function getPostulacionById(postulacionId) {
   try {
-    const postulacion = await Postulacion.findById(postulacionId);
-    return [postulacion, null];
+    const postulacion = await Postulacion.findById(postulacionId)
+    .populate("subsidio")
+    .populate({ path: "postulante", populate: { path: "user" } })
+    .exec();
+  return [postulacion, null];
   } catch (error) {
     return [null, error];
   }

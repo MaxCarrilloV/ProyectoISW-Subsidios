@@ -61,8 +61,8 @@ const router = createBrowserRouter([
         element: <PrivateRoute element={<Motivo />} roles={[ 'admin']} />,
       },
       {
-        path: '/Evaluar',
-        element: <PrivateRoute element={<Evaluar />} roles={[ 'admin']} />,
+        path: 'Postulaciones/Evaluar/:id',
+        element: <PrivateRoute element={<Evaluar />} roles={['admin']} />,
       },
       {
         path: '/Evaluaciones',

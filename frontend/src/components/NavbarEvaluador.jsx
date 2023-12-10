@@ -56,8 +56,8 @@ function NavbarEvaluador({navigate} ) {
           </Nav.Link>
           <Nav.Link
             href="/Postulaciones"
-            onClick={(e) => handleNavItemClick(e,'Postulaciones')}
-            style={getLinkStyle('Postulaciones')}
+            onClick={(e) => handleNavItemClick(e,'Postulaciones')  }
+            style={getLinkStyle('Postulaciones')  }
           >
             Postulaciones
           </Nav.Link>

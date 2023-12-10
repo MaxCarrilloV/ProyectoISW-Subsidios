@@ -15,7 +15,7 @@ const { setupDB } = require("./config/configDB.js");
 // Importa el handler de errores
 const { handleFatalError, handleError } = require("./utils/errorHandler.js");
 const { createRoles, createUsers,createEstados } = require("./config/initialSetup");
-
+const path = require("path");
 /**
  * Inicia el servidor web
  */
@@ -36,7 +36,8 @@ async function setupServer() {
     server.use(express.urlencoded({ extended: true }));
     // Agrega el enrutador principal al servidor
     server.use("/api", indexRoutes);
-
+ 
+    server.use("/documentos", express.static(path.join(__dirname, "./documentos/postulaciones")));
     // Inicia el servidor en el puerto especificado
     server.listen(PORT, () => {
       console.log(`=> Servidor corriendo en ${HOST}:${PORT}/api`);
