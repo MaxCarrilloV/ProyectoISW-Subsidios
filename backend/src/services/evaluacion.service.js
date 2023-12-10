@@ -35,10 +35,11 @@ async function createEvaluacion(evaluacion) {
       const criteriosNoExistentes = nombresCriterios.filter(nombre => !criteriosExistente.some(c => c.nombre === nombre));
       return [null, `Los siguientes criterios no existen , o estan repetidos: ${criteriosNoExistentes.join(', ')}`];
     }
-
+    const puntajeMaximo = criterios.reduce((total, criterio) => total + 10,0);
+    console.log(puntajeMaximo);
     const puntajeMax = calcularPuntajeMaximo(evaluacion.formularioEvaluacion.criterios);
-    const puntajeAprobacion = puntajeMax * 0.7;
-    const decision = calcularDecision(puntajeMax, evaluacion.formularioEvaluacion.puntajeAprobacion);
+    const puntajeAprobacion = puntajeMaximo * 0.7;
+    const decision = calcularDecision(puntajeMax, puntajeAprobacion);
 
 
     postulacionExistente.estado = decision;
@@ -65,7 +66,8 @@ async function createEvaluacion(evaluacion) {
 }
 
 const calcularPuntajeMaximo = (criterios) => {
-  const puntajeMax = criterios.reduce((total, criterio) => total + criterio.puntuacion, 0);
+  const puntajeMax = criterios.reduce((total, criterio) => total + parseInt(criterio.puntuacion),0);
+  console.log(puntajeMax);
   return puntajeMax;
 };
 
@@ -91,7 +93,10 @@ async function isAdminCheck(evaluadorId) {
 
 async function getEvaluaciones() {
   try {
-    const evaluaciones = await Evaluacion.find().exec();
+    const evaluaciones = await Evaluacion.find()
+    .populate({ path: "postulacion", populate: { path: "postulante" } })
+    .populate("formularioEvaluacion.criterios.nombre")
+    .exec();
     if (!evaluaciones) return [null, "No hay evaluaciones"];
 
     return [evaluaciones, null];
@@ -114,38 +119,32 @@ async function getEvaluacionById(id) {
 
 async function updateEvaluacion(id, evaluacion) {
   try {
-    const evaluacionFound = await Evaluacion.findById(id);
-    if (!evaluacionFound) return [null, "La evaluación no existe"];
+    const evaluacionAnterior = await Evaluacion.findById(id);
 
-    const { postulacion, evaluador, decision, observaciones, formularioEvaluacion } = evaluacion;
+    if (evaluacion.formularioEvaluacion.criterios) {
+      const criteriosAnteriores = evaluacionAnterior.formularioEvaluacion.criterios;
+      const criteriosNuevos = evaluacion.formularioEvaluacion.criterios;
 
-    const postulacionExistente = await Postulacion.findById(postulacion);
-    if (!postulacionExistente) return [null, "La postulación no existe"];
-    postulacionExistente.estado = decision;
+      const nuevoPuntajeMax = criteriosNuevos.reduce((total, criterio) => total + parseInt(criterio.puntuacion), 0);
 
-   
-    evaluacionFound.postulacion = postulacion;
-    evaluacionFound.evaluador = evaluador;
-    evaluacionFound.decision = decision;
-    evaluacionFound.observaciones = observaciones;
-    
-  
-    if (formularioEvaluacion) {
-      const { puntajeMax, observaciones: obsFormulario, puntajeAprobacion, criterios } = formularioEvaluacion;
-      if (puntajeMax !== undefined) evaluacionFound.formularioEvaluacion.puntajeMax = puntajeMax;
-      if (obsFormulario !== undefined) evaluacionFound.formularioEvaluacion.observaciones = obsFormulario;
-      if (puntajeAprobacion !== undefined) evaluacionFound.formularioEvaluacion.puntajeAprobacion = puntajeAprobacion;
-      if (criterios !== undefined) evaluacionFound.formularioEvaluacion.criterios = criterios;
+      evaluacionAnterior.formularioEvaluacion.puntajeMax = nuevoPuntajeMax;
+
+      evaluacionAnterior.decision = nuevoPuntajeMax > evaluacionAnterior.formularioEvaluacion.puntajeAprobacion ? 'Aprobada' : 'Rechazada';
+
+      evaluacionAnterior.formularioEvaluacion.criterios = criteriosNuevos;
+
+      evaluacionAnterior.formularioEvaluacion.observaciones = evaluacion.formularioEvaluacion.observaciones;
     }
 
-    const evaluacionUpdated = await evaluacionFound.save();
-    await postulacionExistente.updateOne(postulacionExistente);
+    await evaluacionAnterior.updateOne(evaluacionAnterior);
 
-    return [evaluacionUpdated, null];
+    return [evaluacionAnterior, null];
   } catch (error) {
     handleError(error, "evaluacion.service -> updateEvaluacion");
+    return [null, error];  // Devuelve también el error en caso de que ocurra.
   }
 }
+
 
 
 async function deleteEvaluacion(id) {

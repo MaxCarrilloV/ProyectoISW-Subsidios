@@ -32,7 +32,7 @@ function Postular() {
       });
 
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         data.documentos = [
             ...(data.documentos1 || []),
             ...(data.documentos2 || []),
@@ -41,7 +41,8 @@ function Postular() {
         delete data.documentos1;
         delete data.documentos2;
         delete data.documentos3;
-        if(CreatePostulacion(data)){
+        const  enviado = await CreatePostulacion(data)
+        if(enviado){
             setShowAlert(true);
             setTimeout(() => {
                 setShowAlert(false);

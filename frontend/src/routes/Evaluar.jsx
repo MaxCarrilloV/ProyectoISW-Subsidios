@@ -2,7 +2,9 @@ import React from "react";
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import { getPostulacion } from "../services/postulaciones.service";
-import { Button, ListGroup, Modal, Stack } from "react-bootstrap";
+import { Button, ListGroup, Modal, Stack ,Spinner} from "react-bootstrap";
+import  FormularioEvaluacion  from "../components/Evaluaciones/FormularioEvaluacion";
+
 
 const Evaluar = () => {
     const { id } = useParams();
@@ -59,7 +61,7 @@ const Evaluar = () => {
     };
 
     if (loading) {
-        return <p>Cargando...</p>;
+        return <Spinner animation="border" />;;
     }
 
     return (
@@ -87,7 +89,7 @@ const Evaluar = () => {
                 <Modal.Title>Visualizador de Documento</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <iframe title="Visualizador de Documento" src={`http://localhost:5000/documentos/${selectedDocumento}`} width="100%" height="500px" frameBorder="0" />
+                    <iframe title="Visualizador de Documento" src={`http://localhost:5000/documentos/${selectedDocumento}`} width="100%" height="500px"  />
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={handleHideModal}>
@@ -95,6 +97,7 @@ const Evaluar = () => {
                 </Button>
                 </Modal.Footer>
             </Modal>
+            <FormularioEvaluacion postulacion={postulacion}/>
         </Stack>
     );
 }

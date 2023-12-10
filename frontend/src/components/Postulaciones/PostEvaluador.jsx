@@ -21,7 +21,7 @@ const PostEvaluador = ({ postulacion }) => {
             <td> {postulacion.fechaSolicitud} </td>
            {postulacion.estado ==='Pendiente'? 
               (<td> <Button className="me-2" href={evaluarLink} >Evaluar</Button> </td>): 
-              (<td> <Button href="/Evaluacion" >Ver Evaluación</Button> </td>) 
+              (<td> <Button disabled>Evaluar</Button> </td>) 
            } 
         </tr>
       </>

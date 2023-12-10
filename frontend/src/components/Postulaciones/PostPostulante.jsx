@@ -45,8 +45,9 @@ const PostPostulante = ({ postulacion }) => {
       });
 
 
-    const onSubmit = (data) => {
-        if(updatePostulacion(data)){
+    const onSubmit =  async (data) => {
+       const enviado = await updatePostulacion(data);
+        if(enviado){
             setShowAlert(true);
             setTimeout(() => {
                 setShowAlert(false);
