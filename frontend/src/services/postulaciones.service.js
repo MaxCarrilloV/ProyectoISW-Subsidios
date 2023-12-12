@@ -58,15 +58,16 @@ export const deletePostulacion = async (id,idPostulante) => {
   try {
   
     const response = await axios.delete(`/postulacion/${id}`);
-    const responsepostulante = await axios.delete(`/postulante/${idPostulante}`);
     const { status } = response;
-    const { statuspostulante } = responsepostulante;
-    if (status === 200 && statuspostulante === 200) {
-      return true;
+    if (status === 200) {
+      const responsepostulante = await axios.delete(`/postulante/${idPostulante}`);
+      const { status } = responsepostulante;
+      if (status === 200) {
+        return true;
+      }
     }
   } catch (error) {
     return false;
-    console.log(error);
   }
 }
 

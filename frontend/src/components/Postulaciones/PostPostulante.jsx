@@ -88,11 +88,14 @@ const PostPostulante = ({ postulacion }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     let id = postulacion._id;
     let postulante = postulacion.postulante._id;
-    if (deletePostulacion(id,postulante)){
-      document.location.reload();
+    const eliminado = await deletePostulacion(id,postulante);
+    if (eliminado){
+      setTimeout(() => {
+        document.location.reload();
+    }, 10);
     }
     handleClose();
   }

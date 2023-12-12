@@ -2,6 +2,7 @@ const Joi = require("joi");
 
 const postulacionBodySchema = Joi.object({
     postulante: Joi.string()
+        .pattern(/^(?:[0-9a-fA-F]{24}|[0-9a-fA-F]{12})$/)
         .required()
         .messages({
             "string.empty": "El postulante no puede estar vacío.",
@@ -10,13 +11,14 @@ const postulacionBodySchema = Joi.object({
         }),
 
     subsidio: Joi.string()
+        .pattern(/^(?:[0-9a-fA-F]{24}|[0-9a-fA-F]{12})$/)
         .required()
         .messages({
             "string.empty": "El subsidio no puede estar vacío.",
             "any.required": "El subsidio es obligatorio.",
             "string.base": "El subsidio debe ser de tipo string.",
         }),
-        documentos: Joi.array().items(Joi.string()).messages({
+    documentos: Joi.array().items(Joi.string()).messages({
             "array.empty": "Los documentos no pueden estar vacíos.",
             "any.required": "Los documentos son obligatorios.",
             "array.base": "Los documentos deben ser de tipo array.",

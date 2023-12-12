@@ -62,7 +62,15 @@ function Postular() {
      
     const handleKeyDown = (e) => {
         const validKeys = /^[0-9\-\.\k]+$/;
-        if (!validKeys.test(e.key) && e.key !== 'Backspace') {
+        if (!validKeys.test(e.key) && e.key !== 'Backspace' && !['ArrowRight', 'ArrowLeft'].includes(e.key)) {
+            e.preventDefault();
+        }
+    };
+
+   const  handletext = (e) => {
+        const validKeys = /^[a-zA-Z\s\b]+$/;
+
+        if (!validKeys.test(e.key) && !['ArrowRight', 'ArrowLeft'].includes(e.key)) {
             e.preventDefault();
         }
     };
@@ -81,15 +89,15 @@ function Postular() {
 
             <Form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" >
                 <Form.Group className="mb-3" >
-                    <Form.Control  name="user" hidden type="text" value={user.id} {...register('user', { required: true })} />
+                    <Form.Control name="user" hidden type="text" value={user.id} {...register('user', { required: true })} />
                 </Form.Group>
-                <FloatingLabel className="mb-3" label="nombre">
-                    <Form.Control  name="nombre" type="text" placeholder='Nombre' {...register('nombre', { required: true })} />
+                <FloatingLabel  className="mb-3" label="nombre">
+                    <Form.Control onKeyDown={handletext}  name="nombre" type="text" placeholder='Nombre' {...register('nombre', { required: true })} />
                 </FloatingLabel>
                 <FloatingLabel label="RUT" className="mb-3">
                     <Form.Control
                     type="text"
-                    maxlength="12"
+                    maxLength="12"
                     name="rut"
                     onChange={(e) => setValue('rut', e.target.value)}
                     placeholder="RUT"
@@ -103,7 +111,14 @@ function Postular() {
                     <Form.Text> Ingrese RUT con puntos y con guión</Form.Text>
                 </FloatingLabel>
                 <FloatingLabel label="Fecha de nacimiento" className="mb-3">
-                    <Form.Control  name="fechaNacimiento" type="date" placeholder='Fecha de Nacimiento' {...register('fechaNacimiento', { required: true })} />
+                    <Form.Control  name="fechaNacimiento" type="date" placeholder='Fecha de Nacimiento' 
+                    {...register('fechaNacimiento', { required: true ,validate: (value) => {
+                        const birthdateDate = new Date(value);
+                        const currentDate = new Date();
+                        const age = currentDate.getFullYear() - birthdateDate.getFullYear();
+                        return age >= 18 || 'Debe ingresar una fecha de nacimiento mayor de 18 años.';
+                    },})} />
+                    <Form.Text> Debe ingresar una fecha de nacimiento mayor de 18 años </Form.Text>
                 </FloatingLabel>
                 <FloatingLabel className="mb-3" label="Dirección">
                     <Form.Control  name="direccion" type="text" placeholder='Dirección' {...register('direccion', { required: true })} />

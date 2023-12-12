@@ -13,6 +13,13 @@ async function getPostulantes() {
 async function createPostulante(postulanteData) {
     try {
         const { user , nombre , fechaNacimiento} = postulanteData;
+        const fechaNacimientoDate = new Date(fechaNacimiento);
+        const hoy = new Date();
+        const edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+        if (edad < 18 || edad >= 90) {
+            return [null, "La edad del usuario no se le permite postular"];;
+          }
+
        
         const userExistente = await usuario.findById(user);
         if (!userExistente) {
@@ -24,6 +31,7 @@ async function createPostulante(postulanteData) {
         }
         
         const fechaNacimientoError = validateFechaNacimiento(fechaNacimiento);
+        
         if (fechaNacimientoError) {
             return [null, fechaNacimientoError];
         }
@@ -93,10 +101,18 @@ async function getPostulanteById(postulanteId) {
 async function updatePostulante(postulanteId, postulanteData) {
     try {
         const postulanteFound = await Postulante.findById(postulanteId);
-
         if (!postulanteFound) {
             return [null, "El postulante no existe"];
         }
+
+        const {fechaNacimiento} = postulanteFound
+
+        const fechaNacimientoDate = new Date(fechaNacimiento);
+        const hoy = new Date();
+        const edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+        if (edad < 18 || edad >= 90) {
+            return [null, "La edad del usuario no se le permite postular"];;
+          }
         const postulante = await Postulante.findByIdAndUpdate(postulanteId, postulanteData, { new: true });
         return [postulante, null];
     } catch (error) {
@@ -106,13 +122,7 @@ async function updatePostulante(postulanteId, postulanteData) {
 
 async function deletePostulante(postulanteId) {
     try {
-        const postulanteFound = await Postulante.findById(postulanteId);
-
-        if (!postulanteFound) {
-            return [null, "El postulante no existe"];
-        }
-        await Postulante.findByIdAndDelete(postulanteId);
-        return ["Postulante eliminado", null];
+        return await Postulante.findByIdAndDelete(postulanteId);
     } catch (error) {
         return [null, error];
     }
