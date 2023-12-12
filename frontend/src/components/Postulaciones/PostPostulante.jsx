@@ -1,4 +1,4 @@
-import { Button ,Modal, Form, Alert} from "react-bootstrap";
+import { Button ,Modal, Form, FloatingLabel} from "react-bootstrap";
 import { useState,useEffect } from 'react';
 import { deletePostulacion } from '../../services/postulaciones.service';
 import { useAuth } from '../../context/AuthContext';
@@ -155,10 +155,10 @@ const PostPostulante = ({ postulacion }) => {
                     <Form.Group className="mb-3"  >
                       <Form.Control  name="postulante" hidden type="text" value={postulacion.postulante._id} {...register('postulante', { required: true })} />
                     </Form.Group>
-                    <Form.Group className="mb-3">
+                    <FloatingLabel label="Nombre" className="mb-3">
                       <Form.Control name="nombre" type="text" placeholder='Nombre' {...register('nombre', { required: true })}/>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
+                    </FloatingLabel>
+                    <FloatingLabel label="RUT" className="mb-3">
                       <Form.Control
                       type="text"
                       name="rut"
@@ -171,13 +171,13 @@ const PostPostulante = ({ postulacion }) => {
                       <Form.Control.Feedback type="invalid">
                       Ingresa un RUT válido.
                       </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
+                    </FloatingLabel>
+                    <FloatingLabel label="Fecha de nacimiento" className="mb-3">
                       <Form.Control  name="fechaNacimiento" type="date" placeholder='Fecha de Nacimiento' {...register('fechaNacimiento', { required: true })} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
+                    </FloatingLabel>
+                    <FloatingLabel label="Dirección" className="mb-3">
                       <Form.Control  name="direccion" type="text" placeholder='Dirección' {...register('direccion', { required: true })} />
-                    </Form.Group>
+                    </FloatingLabel>
                     <Form.Select className="mb-3" name='subsidio' {...register('subsidio', { required: true })}>
                       <option key='' value=''>Seleccione un subsidio</option>
                       {subsidios.map((subsidio) => (

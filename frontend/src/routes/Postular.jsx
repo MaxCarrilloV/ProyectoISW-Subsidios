@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, Stack, Modal } from "react-bootstrap";
+import { Button, Form, Stack, Modal,FloatingLabel } from "react-bootstrap";
 import { useForm } from 'react-hook-form';
 import {CreatePostulacion} from '../services/postulaciones.service';
 import { useAuth } from '../context/AuthContext';
@@ -12,7 +12,6 @@ function Postular() {
     const { user } = useAuth();
     const [showAlert, setShowAlert] = useState(false);
     const [showAlertD, setShowAlertD] = useState(false);
-
     const [subsidios, setSubsidios] = useState([]);
     const {
         register,
@@ -81,15 +80,16 @@ function Postular() {
             <h1 className="mb-3" >Postulación a subsidio</h1>
 
             <Form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" >
-                <Form.Group className="mb-3"  controlId="formBasicEmail">
+                <Form.Group className="mb-3" >
                     <Form.Control  name="user" hidden type="text" value={user.id} {...register('user', { required: true })} />
                 </Form.Group>
-                <Form.Group className="mb-3" >
+                <FloatingLabel className="mb-3" label="nombre">
                     <Form.Control  name="nombre" type="text" placeholder='Nombre' {...register('nombre', { required: true })} />
-                </Form.Group>
-                <Form.Group className="mb-3">
+                </FloatingLabel>
+                <FloatingLabel label="RUT" className="mb-3">
                     <Form.Control
                     type="text"
+                    maxlength="12"
                     name="rut"
                     onChange={(e) => setValue('rut', e.target.value)}
                     placeholder="RUT"
@@ -100,13 +100,14 @@ function Postular() {
                     <Form.Control.Feedback type="invalid">
                     Ingresa un RUT válido.
                     </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-3">
+                    <Form.Text> Ingrese RUT con puntos y con guión</Form.Text>
+                </FloatingLabel>
+                <FloatingLabel label="Fecha de nacimiento" className="mb-3">
                     <Form.Control  name="fechaNacimiento" type="date" placeholder='Fecha de Nacimiento' {...register('fechaNacimiento', { required: true })} />
-                </Form.Group>
-                <Form.Group className="mb-3">
+                </FloatingLabel>
+                <FloatingLabel className="mb-3" label="Dirección">
                     <Form.Control  name="direccion" type="text" placeholder='Dirección' {...register('direccion', { required: true })} />
-                </Form.Group>
+                </FloatingLabel>
                 <Form.Select className="mb-3" name='subsidio' {...register('subsidio', { required: true })}>
                     <option key='' value=''>Seleccione un subsidio</option>
                     {subsidios.map((subsidio) => (
@@ -127,9 +128,9 @@ function Postular() {
                             return value;
                           }})}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Text type="invalid">
                     Ingresa un archivo con extension .PDF
-                    </Form.Control.Feedback>
+                    </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Certificado de cotizaciones</Form.Label>
@@ -143,9 +144,9 @@ function Postular() {
                             return value;
                           }})}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Text>
                     Ingresa un archivo con extension .PDF
-                    </Form.Control.Feedback>
+                    </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Certificado de Enfermedad</Form.Label>
@@ -159,7 +160,7 @@ function Postular() {
                              if(value ==='') return value[0].type === 'application/pdf' || 'Por favor, selecciona un archivo PDF.';
                           }})}
                     />
-                    <Form.Text>No es necesario ingresar un archivo </Form.Text>
+                    <Form.Text>No es necesario ingresar un archivo solo para subsidios de enfermedad, en formato PDF</Form.Text>
                     <Form.Control.Feedback type="invalid">
                     Ingresa un archivo con extension .PDF
                     </Form.Control.Feedback>
