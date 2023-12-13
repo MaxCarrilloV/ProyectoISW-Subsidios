@@ -7,8 +7,8 @@ import { getSubsidios } from '../../services/subsidios.service';
 import { updatePostulacion } from "../../services/postulaciones.service";
 
 const PostPostulante = ({ postulacion }) => {
-  const [show, setShow] = useState(false);
-  const [showeditar, setShoweditar] = useState(false);
+    const [show, setShow] = useState(false);
+    const [showeditar, setShoweditar] = useState(false);
 
     const { user } = useAuth();
     const [showAlert, setShowAlert] = useState(false);
@@ -102,22 +102,15 @@ const PostPostulante = ({ postulacion }) => {
 
   const handleCloseEditar = () => setShoweditar(false);
 
-   //setear la fecha para que sea de este formato DD/MM/YYYY
-  const fecha = new Date(postulacion.fechaSolicitud);
-  let dia = fecha.getDate();
-  dia = dia < 10 ? '0' + dia : dia;
-  const mes = fecha.getMonth()+1;
-  const año = fecha.getFullYear();
-  dia = dia + '/' + mes + '/' + año;
+   
   return (
-      <> 
+    <table>
+      <tbody> 
         <tr>
-            <td  >{postulacion.estado}</td>
-            <td> {postulacion.subsidio.name} </td>
-            <td> {dia} </td>
-            <td> <Button variant="warning" className="my-2" onClick={handleShow}>Eliminar</Button> 
-            <Button variant="primary" className="ms-2 my2"  onClick={EditarShow}>Editar</Button> 
-            </td>
+            <td>
+            <Button variant="primary" className="my2"  onClick={EditarShow}>Editar</Button> 
+            <Button variant="warning" className="my-2 ms-2" onClick={handleShow}>Eliminar</Button> 
+            
             <Modal show={show} onHide={handleClose}>
 
               <Modal.Header closeButton>
@@ -201,9 +194,10 @@ const PostPostulante = ({ postulacion }) => {
               </Modal.Footer>
               </Form>
             </Modal>
-
+            </td>
         </tr>
-      </>
+      </tbody>
+    </table>
     );
   };
   

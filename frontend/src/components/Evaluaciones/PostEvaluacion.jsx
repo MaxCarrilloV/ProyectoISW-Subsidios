@@ -80,16 +80,16 @@ const PostEvaluacion = ({evaluacion}) => {
 
     return (
         <>
-            <tr>
-                <td>{evaluacion.decision}</td>
-                <td>{evaluacion.postulacion.postulante.nombre}</td>
-                <td>{evaluacion.postulacion.postulante.rut}</td>
-                <td>{diaEvaluacion}</td>
-                <td>
-                    <Button variant="warning" className="my-2" onClick={handleShow}>Eliminar</Button> 
-                    <Button variant="primary" className="ms-2 my2"  onClick={EditarShow}>Editar</Button> 
-                </td>
-            </tr>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <Button variant="warning" className="my-2" onClick={handleShow}>Eliminar</Button> 
+                            <Button variant="primary" className="ms-2 my2"  onClick={EditarShow}>Editar</Button> 
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <Modal show={show} onHide={handleClose}>
 
               <Modal.Header >

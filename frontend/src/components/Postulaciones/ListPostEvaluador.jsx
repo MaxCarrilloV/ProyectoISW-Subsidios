@@ -1,89 +1,113 @@
-import { useState, useEffect } from 'react';
-import { getPostulaciones  } from '../../services/postulaciones.service';
+import React, { useState, useEffect } from 'react';
+import DataTable from 'react-data-table-component';
 import PostEvaluador from './PostEvaluador';
-import { Table, Pagination } from "react-bootstrap";
+import { getPostulaciones } from '../../services/postulaciones.service';
+import { Button, Stack } from 'react-bootstrap';
+
 
 const ListPostEvaluador = () => {
-    const [postulaciones, setPostulaciones] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postulacionesPerPage] = useState(10);
-    const indexOfLastPost = currentPage * postulacionesPerPage;
-    const indexOfFirstPost = indexOfLastPost - postulacionesPerPage;
-    const currentPostulaciones = postulaciones.slice(indexOfFirstPost, indexOfLastPost);
-    const totalPages = Math.ceil(postulaciones.length / postulacionesPerPage);
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const [postulaciones, setPostulaciones] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
 
     useEffect(() => {
         getPostulaciones().then((data) => {
-                const postulacionesOrdenadas = ordenarPostulaciones(data);
-                setPostulaciones(postulacionesOrdenadas);   
+                setPostulaciones(data);   
         });
     }, []);
     
-    const ordenarPostulaciones = (data) => {
-        const ordenEstado = {
-          Pendiente: 1,
-          Rechazada: 3,
-          Aprobada: 2,
-        };
-    
-        return [...data].sort((a, b) => ordenEstado[a.estado] - ordenEstado[b.estado]);
+    const formatFecha = (fecha) => {
+      const date = new Date(fecha);
+      const dia = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+      const mes = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+      const anio = date.getFullYear();
+      return `${dia}-${mes}-${anio}`;
     };
-
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-          setCurrentPage(currentPage - 1);
-        }
-      };
     
-      const handleNextPage = () => {
-        if (currentPage < totalPages) {
-          setCurrentPage(currentPage + 1);
-        }
-      };
-    
+    const columns = [
+      { name: 'Estado', 
+      selector: row => row.estado, 
+      sortable: true,
+       width: '210px' },
+      { name: 'Subsidio', selector: row=> row.subsidio.name, sortable: true, width: '210px' },
+      { name: 'Postulante', selector: row=>row.postulante.nombre, sortable: true, width: '210px' },
+      { name: 'Rut', selector: row => row.postulante.rut, sortable: true, width: '210px' },
+      {
+        name: 'Fecha de creación',
+        selector: row => row.fechaSolicitud,
+        sortable: true,
+        format: (row) => formatFecha(row.fechaSolicitud),
+        width: '210px',
+      },
+      {
+        name: 'Opciones',
+        cell: (row) => <PostEvaluador postulacion={row} />,
+        ignoreRowClick: true,
+        width: '210px',
+      },
+    ];
+  
+    const filteredPostulaciones = postulaciones.filter((postulacion) =>
+    postulacion.estado.toLowerCase().includes(searchText.toLowerCase()) ||
+    postulacion.subsidio.name.toLowerCase().includes(searchText.toLowerCase()) ||
+    formatFecha(postulacion.fechaSolicitud).includes(searchText) ||
+    postulacion.postulante.nombre.toLowerCase().includes(searchText.toLowerCase()) ||
+    postulacion.postulante.rut.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const CustomNoDataComponent = () => (
+    <table>
+      <thead>
+          <tr>
+            {columns.map((column) => (
+              <th key={column.selector || column.name} style={{ width: column.width }}>
+                {column.name}
+              </th>
+            ))}
+          </tr>
+      </thead>
+    </table>
+  );
+  
     return (
-        <div className="container">
+      <div className="container">
+        <Stack direction="horizontal" className="mt-3" gap={3}>
         <h1 className='mt-2' >Postulaciones </h1>
-        
-        <Table  bordered  striped="columns" className='mb-0 border-primary items-center'>
-            <thead>
-                <tr>
-                    <th scope="col" >Estado</th>
-                    <th scope="col" >Subsidio</th>
-                    <th scope="col" >Postulante nombre</th>
-                    <th scope="col" >Postulante RUT</th>
-                    <th>Fecha de creación</th>
-                    <th scope="col">Opciones</th>
-                </tr>
-            </thead>
-            {currentPostulaciones.map((postulacion) => (
-                <tbody key={postulacion._id}>
-                    <PostEvaluador postulacion={postulacion} />
-                </tbody>
-            ))}
-        </Table>
-        {totalPages > 1 && (
-        <div className="pagination-container">
-          <Pagination>
-            <Pagination.Prev onClick={()=>handlePrevPage()} />
-            {Array.from({ length: totalPages }).map((_, index) => (
-              <Pagination.Item
-                key={index}
-                active={index + 1 === currentPage}
-                onClick={() => paginate(index + 1)}
-              >
-                {index + 1}
-              </Pagination.Item>
-            ))}
-            <Pagination.Next onClick={() =>handleNextPage()} />
-          </Pagination>
-        </div>
-      )}
-            
-        </div>
+        </Stack>
+  
+        <DataTable
+           columns={columns}
+           data={filteredPostulaciones}
+           noDataComponent={<CustomNoDataComponent />}
+           pagination
+           highlightOnHover
+           pointerOnHover
+           paginationPerPage={10}
+           paginationRowsPerPageOptions={[10, 25, 50, 100]}
+           paginationComponentOptions={{
+             rowsPerPageText: 'Filas por página:',
+             rangeSeparatorText: 'de',
+             noRowsPerPage: false,
+             selectAllRowsItem: false,
+             selectAllRowsItemText: 'Todos',
+           }}
+           subHeader
+           responsive
+           subHeaderComponent={<SearchBox setSearchText={setSearchText} />}
+           searchable
+ 
+        />
+      </div>
     );
-}
+  };
+  
+  const SearchBox = ({ setSearchText }) => (
+    <input
+      type="text"
+      placeholder="Buscar..."
+      onChange={(e) => setSearchText(e.target.value)}
+      className="form-control w-25"
+      
+    />
+  );
 export default ListPostEvaluador;

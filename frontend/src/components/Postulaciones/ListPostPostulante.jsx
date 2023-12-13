@@ -1,96 +1,110 @@
-import { useState, useEffect } from 'react';
-import { getPostulaciones  } from '../../services/postulaciones.service';
+import React, { useState, useEffect } from 'react';
+import DataTable from 'react-data-table-component';
 import PostPostulante from './PostPostulante';
-import { Table, Pagination, Button, Stack } from "react-bootstrap";
+import { getPostulaciones } from '../../services/postulaciones.service';
+import { Button, Stack } from 'react-bootstrap';
 
-const ListPostPostulante = ({user}) => {
-    const [postulaciones, setPostulaciones] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [postulacionesPerPage] = useState(10);
-    const indexOfLastPost = currentPage * postulacionesPerPage;
-    const indexOfFirstPost = indexOfLastPost - postulacionesPerPage;
-    const currentPostulaciones = postulaciones.slice(indexOfFirstPost, indexOfLastPost);
-    const totalPages = Math.ceil(postulaciones.length / postulacionesPerPage);
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+const ListPostPostulante = ({ user }) => {
+  const [postulaciones, setPostulaciones] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
+  useEffect(() => {
+    getPostulaciones().then((data) => {
+      if (data) {
+        const userPostulaciones = data.filter((postulacion) => postulacion.postulante.user === user.id);
+        setPostulaciones(userPostulaciones);
+      }
+    });
+  }, []);
 
-    useEffect(() => {
-        getPostulaciones().then((data) => {
-            if(data) 
-            for(let i=0; i<data.length; i++) {
-              let postulante = data[i].postulante;
-              let userid = postulante.user;
-                if(user.id === userid){
-                    const postulacionesOrdenadas = ordenarPostulaciones(data);
-                    setPostulaciones(postulacionesOrdenadas);   
-                }
-            }
-        });
-    }, []);
+  const formatFecha = (fecha) => {
+    const date = new Date(fecha);
+    const dia = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+    const mes = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+    const anio = date.getFullYear();
+    return `${dia}-${mes}-${anio}`;
+  };
+  
+  const columns = [
+    { name: 'Estado', selector: row=>row.estado, sortable: true, width: '300px' },
+    { name: 'Subsidio', selector: row=>row.subsidio.name, sortable: true, width: '300px' },
+    {
+      name: 'Fecha de envío',
+      selector: row=>row.fechaSolicitud,
+      sortable: true,
+      format: (row) => formatFecha(row.fechaSolicitud),
+      width: '300px',
+    },
+    {
+      name: 'Opciones',
+      cell: (row) => <PostPostulante postulacion={row} />,
+      ignoreRowClick: true,
+      allowoverflow: true,
+      width: '300px',
+    },
+  ];
+
+  const filteredPostulaciones = postulaciones.filter((postulacion) =>
+  postulacion.estado.toLowerCase().includes(searchText.toLowerCase()) ||
+  postulacion.subsidio.name.toLowerCase().includes(searchText.toLowerCase()) ||
+  formatFecha(postulacion.fechaSolicitud).includes(searchText)
+);
+
+const CustomNoDataComponent = () => (
+  <table>
+      <thead>
+        <tr>
+          {columns.map((column) => (
+            <th key={column.selector || column.name} style={{ width: column.width }}>
+              {column.name}
+            </th>
+          ))}
+        </tr>
+      </thead>
+  </table>
+);
+
+  return (
+    <div className="container">
+      <Stack direction="horizontal" className="mt-3" gap={3}>
+        <h1>Postulaciones Realizadas</h1>
+        <Button className="p-2 ms-auto" href="Postular">
+          Postular a subsidio
+        </Button>
+      </Stack>
+
+      <DataTable
+         columns={columns}
+         data={filteredPostulaciones}
+         noDataComponent={<CustomNoDataComponent />}
+         pagination
+         highlightOnHover
+         pointerOnHover
+         paginationPerPage={10}
+         paginationRowsPerPageOptions={[10, 25, 50, 100]}
+         paginationComponentOptions={{
+           rowsPerPageText: 'Filas por página:',
+           rangeSeparatorText: 'de',
+           noRowsPerPage: false,
+           selectAllRowsItem: false,
+           selectAllRowsItemText: 'Todos',
+         }}
+         subHeader
+         subHeaderComponent={<SearchBox setSearchText={setSearchText} />}
+         searchable
+      />
+    </div>
+  );
+};
+
+const SearchBox = ({ setSearchText }) => (
+  <input
+    type="text"
+    placeholder="Buscar..."
+    onChange={(e) => setSearchText(e.target.value)}
+    className="form-control w-25"
     
-    const ordenarPostulaciones = (data) => {
-        const ordenEstado = {
-          Pendiente: 3,
-          Rechazada: 2,
-          Aprobada: 1,
-        };
-    
-        return [...data].sort((a, b) => ordenEstado[a.estado] - ordenEstado[b.estado]);
-    };
+  />
+);
 
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-          setCurrentPage(currentPage - 1);
-        }
-      };
-    
-      const handleNextPage = () => {
-        if (currentPage < totalPages) {
-          setCurrentPage(currentPage + 1);
-        }
-      };
-    
-    return (
-        <div className="container">
-        <Stack direction="horizontal" className='mt-3' gap={3}>
-            <h1 >Postulaciones Realizadas</h1>
-            <Button className="p-2 ms-auto" href='Postular' >Postular a subsidio</Button>
-        </Stack>
-        <Table  bordered  striped="columns" className='mb-0 border-primary items-center'>
-            <thead>
-                <tr>
-                    <th scope="col" >Estado</th>
-                    <th scope="col" >Subsidio</th>
-                    <th>Fecha de envió</th>
-                    <th scope="col">Opciones</th>
-                </tr>
-            </thead>
-            {currentPostulaciones.map((postulacion) => (
-                <tbody key={postulacion._id}>
-                    <PostPostulante postulacion={postulacion} />
-                </tbody>
-            ))}
-        </Table>
-        {totalPages > 1 && (
-        <div className="pagination-container">
-          <Pagination>
-            <Pagination.Prev onClick={()=>handlePrevPage()} />
-            {Array.from({ length: totalPages }).map((_, index) => (
-              <Pagination.Item
-                key={index}
-                active={index + 1 === currentPage}
-                onClick={() => paginate(index + 1)}
-              >
-                {index + 1}
-              </Pagination.Item>
-            ))}
-            <Pagination.Next onClick={() =>handleNextPage()} />
-          </Pagination>
-        </div>
-      )}
-            
-        </div>
-    );
-}
 export default ListPostPostulante;
