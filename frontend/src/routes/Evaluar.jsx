@@ -89,7 +89,7 @@ const Evaluar = () => {
                 <Modal.Title>Visualizador de Documento</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <iframe title="Visualizador de Documento" src={`http://localhost:5000/documentos/${selectedDocumento}`} width="100%" height="500px"  />
+                    <iframe title="Visualizador de Documento" src={`http://146.83.198.35:1644/documentos/${selectedDocumento}`} width="100%" height="500px"  />
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={handleHideModal}>
