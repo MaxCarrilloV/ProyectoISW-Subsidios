@@ -43,10 +43,9 @@ export const CreatePostulacion = async ({user,nombre,rut,fechaNacimiento,direcci
         const { status } = response;
         if (status === 201) {
           return true;
+        }else{
+          await axios.delete(`/postulante/${postulante}`);
         }
-      
-      
-      
     }
   } catch (error) {
     console.log(error);
