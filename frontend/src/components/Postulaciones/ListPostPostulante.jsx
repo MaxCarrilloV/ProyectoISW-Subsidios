@@ -44,7 +44,7 @@ const ListPostPostulante = ({ user }) => {
     },
   ];
 
-  const filteredPostulaciones = postulaciones.filter((postulacion) =>
+  const filteredPostulaciones = postulaciones?.filter((postulacion) =>
   postulacion.estado.toLowerCase().includes(searchText.toLowerCase()) ||
   postulacion.subsidio.name.toLowerCase().includes(searchText.toLowerCase()) ||
   formatFecha(postulacion.fechaSolicitud).includes(searchText)
