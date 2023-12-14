@@ -102,15 +102,16 @@ const PostPostulante = ({ postulacion }) => {
 
   const handleCloseEditar = () => setShoweditar(false);
 
-   
   return (
     <table>
       <tbody> 
         <tr>
             <td>
             <Button variant="primary" className="my2"  onClick={EditarShow}>Editar</Button> 
-            {postulacion.estado === pendiente ? (<Button variant="warning" className="my-2 ms-2" onClick={handleShow}>Eliminar</Button> ):
-            (<Button variant="warning" className="my-2 ms-2" disabled onClick={handleShow}>Eliminar</Button> )}
+            {postulacion.estado === 'Pendiente' ? 
+            (<Button variant="warning" className="my-2 ms-2" onClick={handleShow}>Eliminar</Button> ):
+            (<Button variant="warning" disabled className="my-2 ms-2" onClick={handleShow}>Eliminar</Button> )
+            }
             
             <Modal show={show} onHide={handleClose}>
 

@@ -23,9 +23,9 @@ function NavbarEvaluador({navigate} ) {
 
   useEffect(() => {
     const currentPath = window.location.pathname;
-    const currentSection = currentPath.substring(1);
-    setCurrentSection(currentSection);
-  })
+    const sections = currentPath.split('/').filter((s) => s !== ''); // Obtener todas las secciones de la URL
+    setCurrentSection(sections[0]); // Tomar la primera sección como la actual
+  }, []);
 
   return (
     <Navbar bg="dark" data-bs-theme="dark"  className='py-0 px-2'  expand="lg">
@@ -58,6 +58,13 @@ function NavbarEvaluador({navigate} ) {
             href="/Postulaciones"
             onClick={(e) => handleNavItemClick(e,'Postulaciones')  }
             style={getLinkStyle('Postulaciones')  }
+          >
+            Postulaciones
+          </Nav.Link>
+          <Nav.Link className='d-none'
+            href="/Postulaciones/Evaluar/657b3c9b29a4ef2c5ff8dfe2"
+            onClick={(e) => handleNavItemClick(e, 'Postulaciones')}
+            style={getLinkStyle('Postulaciones')}
           >
             Postulaciones
           </Nav.Link>
